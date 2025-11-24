@@ -1,7 +1,7 @@
 name: Hikvision Event Listener
 version: "1.0.1"
 slug: hikvision_event_listener
-description: Listen to Hikvision events and forward to HA Webhook
+description: Listen to Hikvision events and forward to HA webhook
 startup: services
 boot: auto
 host_network: true
