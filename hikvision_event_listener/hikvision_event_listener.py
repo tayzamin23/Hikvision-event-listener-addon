@@ -1,4 +1,4 @@
-Import requests, time, urllib3
+import requests, time, urllib3
 from requests.auth import HTTPDigestAuth
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
@@ -37,9 +37,8 @@ while True:
 
         for raw_line in r.iter_lines():
             if not raw_line:
- 		continue
+                continue
 
-            # FIX: convert bytes → str safely
             try:
                 line = raw_line.decode(errors="ignore")
             except:
