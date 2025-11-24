@@ -1,16 +1,10 @@
-FROM python:3.11-alpine
+ARG BUILD_FROM
+FROM $BUILD_FROM
 
-RUN apk add --no-cache bash \
-    && pip3 install requests
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-WORKDIR /app
+COPY rootfs /
+RUN apk add --no-cache git git-lfs
+RUN chmod a+x /etc/addon/run
 
-# Copy run.sh correctly
-COPY run.sh /app/run.sh
-
-# Copy python file correctly (exact same name)
-COPY hikvision_event_listener.py /app/hikvision_event_listener.py
-
-# Make run.sh executable
-RUN chmod +x /app/run.sh
-
+CMD [ "/etc/addon/run" ]
