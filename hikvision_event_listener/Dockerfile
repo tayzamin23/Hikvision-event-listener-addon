@@ -10,4 +10,5 @@ RUN apk add --no-cache bash \
 WORKDIR /app
 
 COPY hikvision_event_listener.py /app/hikvision_event_listener.py
-COPY rootfs /
+COPY run.sh /
+
