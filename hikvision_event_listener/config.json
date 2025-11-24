@@ -1,0 +1,14 @@
+{
+  "name": "Hikvision Event Listener",
+  "version": "1.0.1",
+  "slug": "hikvision_event_listener",
+  "description": "Listens to Hikvision ISAPI alertStream and forwards events to Home Assistant webhook",
+  "arch": ["amd64", "armv7", "aarch64"],
+  "startup": "services",
+  "boot": "auto",
+  "options": {},
+  "schema": {},
+  "host_network": true,
+  "icon": "icon.png",
+  "logo": "logo.png"
+}
