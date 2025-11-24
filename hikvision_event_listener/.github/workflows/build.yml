@@ -1,27 +1,7 @@
-name: Build container
-
-on:
-  push:
-    branches:
-      - main
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Log in to GHCR
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/${{ github.repository }}/hikvision_event_listener:latest
+build_from:
+  aarch64: "ghcr.io/home-assistant/aarch64-base:3.20"
+  amd64: "ghcr.io/home-assistant/amd64-base:3.20"
+  armv7: "ghcr.io/home-assistant/armv7-base:3.20"
+labels:
+  org.opencontainers.image.title: "Hikvision Event Listener"
+  org.opencontainers.image.description: "Hikvision ISAPI alertStream listener"
