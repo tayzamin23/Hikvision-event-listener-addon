@@ -1,13 +1,13 @@
-{
-  "name": "Hikvision Event Listener",
-  "version": "1.0.1",
-  "slug": "hikvision_event_listener",
-  "description": "Listens to Hikvision ISAPI alertStream and forwards events to Home Assistant webhook",
-  "image": "ghcr.io/tayzamin23/hikvision_event_listener",
-  "startup": "services",
-  "boot": "auto",
-  "host_network": true,
-  "icon": "icon.png",
-  "logo": "logo.png"
-}
-
+name: Hikvision Event Listener
+version: "1.0.1"
+slug: hikvision_event_listener
+description: Listen to Hikvision events and forward to HA webhook
+startup: services
+boot: auto
+host_network: true
+arch:
+  - aarch64
+  - amd64
+  - armv7
+options: {}
+schema: {}
