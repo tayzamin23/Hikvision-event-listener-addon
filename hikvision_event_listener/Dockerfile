@@ -11,4 +11,7 @@ WORKDIR /app
 
 COPY hikvision_event_listener.py /app/hikvision_event_listener.py
 COPY run.sh /
+RUN chmod +x /run.sh
+
+CMD [ "/run.sh" ]
 
