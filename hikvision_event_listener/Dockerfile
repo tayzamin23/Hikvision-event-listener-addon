@@ -3,7 +3,6 @@ FROM $BUILD_FROM
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# Install required packages
 RUN apk add --no-cache bash \
     && pip3 install requests
 
@@ -14,5 +13,3 @@ COPY run.sh /run.sh
 RUN chmod +x /run.sh
 
 CMD [ "/run.sh" ]
-
-
