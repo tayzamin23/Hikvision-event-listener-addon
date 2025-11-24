@@ -7,3 +7,22 @@ labels:
   org.opencontainers.image.title: "Hikvision Event Listener"
   org.opencontainers.image.description: "Hikvision ISAPI alert listener for Home Assistant"
   org.opencontainers.image.license: "MIT"
+
+name: Hikvision Event Listener
+version: "1.0.3"   # <<< BUMP THIS FOR EVERY BUILD
+slug: hikvision_event_listener
+description: "Listens to Hikvision ISAPI alertStream and forwards events to Home Assistant webhook"
+url: "https://github.com/tayzamin23/hikvision_event_listener"
+
+arch:
+  - aarch64
+  - amd64
+  - armv7
+
+startup: services
+boot: auto
+init: false
+host_network: true
+
+options: {}
+schema: {}
