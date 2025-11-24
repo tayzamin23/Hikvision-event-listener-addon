@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/usr/bin/with-contenv bash
 echo "Starting Hikvision Event Listener..."
-python3 -u /app/hikvision_event_listener.py
+exec python3 -u /app/hikvision_event_listener.py
