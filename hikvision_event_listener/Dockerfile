@@ -13,3 +13,4 @@ COPY hikvision_event_listener.py /app/hikvision_event_listener.py
 
 # Make run.sh executable
 RUN chmod +x /app/run.sh
+
