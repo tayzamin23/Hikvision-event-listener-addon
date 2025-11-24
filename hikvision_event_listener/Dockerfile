@@ -3,8 +3,11 @@ FROM $BUILD_FROM
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-COPY rootfs /
-RUN apk add --no-cache git git-lfs
-RUN chmod a+x /etc/addon/run
+# Install required packages
+RUN apk add --no-cache bash \
+    && pip3 install requests
 
-CMD [ "/etc/addon/run" ]
+WORKDIR /app
+
+COPY hikvision_event_listener.py /app/hikvision_event_listener.py
+COPY rootfs /
