@@ -12,26 +12,13 @@ url = f"https://{CAMERA_IP}/ISAPI/Event/notification/alertStream"
 
 session = requests.Session()
 
-headers = {
+headers_camera = {
     "User-Agent": "Mozilla/5.0",
     "Accept": "*/*",
     "Connection": "keep-alive",
     "Cache-Control": "no-cache",
     "Pragma": "no-cache"
 }
-
-def send_webhook(event_type):
-    payload = {"eventType": event_type}
-
-    try:
-        # IMPORTANT: Do NOT manually set "Content-Type"
-        resp = requests.post(WEBHOOK_URL, json=payload, timeout=5)
-        print(f"[WEBHOOK] Sent → {event_type}")
-        print("STATUS:", resp.status_code)
-        print("RESPONSE:", resp.text)
-    except Exception as e:
-        print("Webhook failed:", e)
-
 
 while True:
     try:
@@ -43,7 +30,7 @@ while True:
             stream=True,
             timeout=20,
             verify=False,
-            headers=headers
+            headers=headers_camera
         )
 
         print("Connected. Waiting for events...")
@@ -57,20 +44,22 @@ while True:
             except:
                 line = str(raw_line)
 
-            # Debug print Hikvision raw output
-            # print("RAW:", line)
-
             if "<eventType>" in line:
                 print("EVENT:", line)
 
-                event_value = line.lower()
-
-                # FACE DETECTION DETECTED
-                if "face" in event_value:
+                if "face" in line.lower():
                     print("FACE DETECTED → Sending to Home Assistant")
-                    send_webhook("faceDetection")
+
+                    # --- Fixed webhook POST with headers and error handling ---
+                    try:
+                        payload = {"eventType": "faceDetection"}
+                        headers_ha = {"Content-Type": "application/json"}
+                        resp = requests.post(WEBHOOK_URL, headers=headers_ha, json=payload, timeout=5)
+                        print("Webhook STATUS:", resp.status_code)
+                        print("Webhook RESPONSE:", resp.text)
+                    except Exception as e:
+                        print("Failed to send webhook:", e)
 
     except Exception as e:
         print("Connection lost:", e)
-        print("Reconnecting in 5 seconds...")
         time.sleep(5)
