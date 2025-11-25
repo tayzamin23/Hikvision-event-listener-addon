@@ -1,5 +1,6 @@
 import requests, time, urllib3
 from requests.auth import HTTPDigestAuth
+import json
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -49,9 +50,17 @@ while True:
 
                 if "face" in line.lower():
                     print("FACE DETECTED → Sending to Home Assistant")
-                    requests.post(WEBHOOK_URL, json={"eventType": "faceDetection"})
+
+                    # Send to HA with explicit headers + error handling
+                    try:
+                        payload = {"eventType": "faceDetection"}
+                        headers_ha = {"Content-Type": "application/json"}
+                        resp = requests.post(WEBHOOK_URL, headers=headers_ha, json=payload, timeout=5)
+                        print("Webhook STATUS:", resp.status_code)
+                        print("Webhook RESPONSE:", resp.text)
+                    except Exception as e:
+                        print("Failed to send webhook:", e)
 
     except Exception as e:
         print("Connection lost:", e)
         time.sleep(5)
-
