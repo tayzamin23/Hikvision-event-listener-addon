@@ -1,6 +1,5 @@
 import requests, time, urllib3
 from requests.auth import HTTPDigestAuth
-import json
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -20,6 +19,19 @@ headers = {
     "Cache-Control": "no-cache",
     "Pragma": "no-cache"
 }
+
+def send_webhook(event_type):
+    payload = {"eventType": event_type}
+
+    try:
+        # IMPORTANT: Do NOT manually set "Content-Type"
+        resp = requests.post(WEBHOOK_URL, json=payload, timeout=5)
+        print(f"[WEBHOOK] Sent → {event_type}")
+        print("STATUS:", resp.status_code)
+        print("RESPONSE:", resp.text)
+    except Exception as e:
+        print("Webhook failed:", e)
+
 
 while True:
     try:
@@ -45,22 +57,20 @@ while True:
             except:
                 line = str(raw_line)
 
+            # Debug print Hikvision raw output
+            # print("RAW:", line)
+
             if "<eventType>" in line:
                 print("EVENT:", line)
 
-                if "face" in line.lower():
-                    print("FACE DETECTED → Sending to Home Assistant")
+                event_value = line.lower()
 
-                    # Send to HA with explicit headers + error handling
-                    try:
-                        payload = {"eventType": "faceDetection"}
-                        headers_ha = {"Content-Type": "application/json"}
-                        resp = requests.post(WEBHOOK_URL, headers=headers_ha, json=payload, timeout=5)
-                        print("Webhook STATUS:", resp.status_code)
-                        print("Webhook RESPONSE:", resp.text)
-                    except Exception as e:
-                        print("Failed to send webhook:", e)
+                # FACE DETECTION DETECTED
+                if "face" in event_value:
+                    print("FACE DETECTED → Sending to Home Assistant")
+                    send_webhook("faceDetection")
 
     except Exception as e:
         print("Connection lost:", e)
+        print("Reconnecting in 5 seconds...")
         time.sleep(5)
